@@ -14,7 +14,7 @@
 <head>
 <title>Page Title</title>
 </head>
-<body onload="getc(); italy();">
+<body onload="getc(); confchart(getname()); deathchart(getnamedeath()); recchart(getnamerec());">
 
 <center><h1>Covid info based on country</h1></center>
 <div class="container">
@@ -30,22 +30,43 @@
     document.getElementById("sel1").onchange = runsubd;
     function runsubd(){
         subd();
+        d3.selectAll("svg").remove()
+        confchart(getname());
+        deathchart(getnamedeath());
+        recchart(getnamerec());
+        
+        
+        
+        var selected = document.getElementById("sel1");
+        var c = selected.value;
+        document.getElementById("conftitle").innerHTML = 'Infected cases in '.concat(c);
+        document.getElementById("deathtitle").innerHTML = 'Deaths in '.concat(c);
+        document.getElementById("rectitle").innerHTML = 'Recovered cases in '.concat(c);
     }
 
 </script>
 
 
-<center><h3>Deaths in Italy</h3></center>
+<center><h3 id="conftitle">Infected cases in US</h3></center>
+<center><div id="confchart"></div></center>
+
+<center><h3 id="deathtitle">Deaths in US</h3></center>
 <center><div id="deathchart"></div></center>
 
+<center><h3 id="rectitle">Recovered patients in US</h3></center>
+<center><div id="recchart"></div></center>
+
 <div class="container">
-    <center><h3 id="d_title" style="display: none">Total deaths:</h3></center>
+
+    <center><h3 id="s_title" style="display: block">Statistics:</h3></center>
+
+    <center><h3 id="d_title" style="display: block">Total deaths:</h3></center>
     <center><h3 id="deaths"></h3></center>
 
-    <center><h3 id="dr_title" style="display: none">Death rate:</h3></center>
+    <center><h3 id="dr_title" style="display: block">Death rate:</h3></center>
     <center><h3 id="deathrate"></h3></center>
 
-    <center><h3 id="tc_title" style="display: none">Total cases:</h3></center>
+    <center><h3 id="tc_title" style="display: block">Total cases:</h3></center>
     <center><h3 id="totalcases"></h3></center>
 </div>
 
