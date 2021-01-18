@@ -7,8 +7,21 @@
     transform: translate(-50%, -50%);
   }
 
+
   .container { 
     height: 100px;
     position: relative;
     border: 3px solid green; 
+  }
+
+ 
+  .axis {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
   }

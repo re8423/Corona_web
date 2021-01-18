@@ -4,13 +4,19 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+<script src="data.js"></script>
+
 <html>
 
 <head>
 <title>Page Title</title>
 </head>
-<body onload="getc();">
-<center><h1>Covid info based on coutry</h1></center>
+<body onload="getc(); italy();">
+
+<center><h1>Covid info based on country</h1></center>
 <div class="container">
     <div class="form-group center" style="width:300px;">
         <label for="sel1">Select Country:</label>
@@ -20,13 +26,31 @@
       </div>
 </div>
 
-<center><button type="button" onclick="subd();">Submit</button></center>
+<script>
+    document.getElementById("sel1").onchange = runsubd;
+    function runsubd(){
+        subd();
+    }
+
+</script>
+
+
+<center><h3>Deaths in Italy</h3></center>
+<center><div id="deathchart"></div></center>
+
 <div class="container">
-    <h3 class="center" id="deaths"></h3>
+    <center><h3 id="d_title" style="display: none">Total deaths:</h3></center>
+    <center><h3 id="deaths"></h3></center>
+
+    <center><h3 id="dr_title" style="display: none">Death rate:</h3></center>
+    <center><h3 id="deathrate"></h3></center>
+
+    <center><h3 id="tc_title" style="display: none">Total cases:</h3></center>
+    <center><h3 id="totalcases"></h3></center>
 </div>
 
 
 </body>
 </html>
 
-<script src="data.js"></script>
+
