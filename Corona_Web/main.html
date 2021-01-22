@@ -9,28 +9,34 @@
 
 <script src="data.js"></script>
 
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.1/papaparse.min.js"></script>
-
 
 <html>
 
 <head>
 <title>Page Title</title>
 </head>
-<body onload="getc(); makechart(); hospchart(getnamehosp()); ruptchart(getnamerupt(),false); callchart(getnamecall(),false);">
+<body onload="getc(); barchart(getnametrue('conf'), false, 'conf'); makechart(); hospchart(getnametrue('hosp'));">
 
-<div class="topnav">
-    <a href="index.html">Home</a>
-    <a class="active"href="main.html">Top 10 Worst-hit Countries</a>
-    <a href="#about">About</a>
-</div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">Worldwide Covid Info Center</a>
+        </div>
+        <ul class="nav navbar-nav">
+        <li class="active"><a href="main.html">Top 10 worst-hit countries</a></li>
+        <li><a href="#">About</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="containerempty"></div>
 
 <center><h1>Top 10 Currently Worst-hit Countries</h1></center>
-<div class="container">
+<div class="container1">
     <div class="form-group center" style="width:300px;">
         <label for="sel1">Select Country:</label>
         <select class="form-control" id="sel1">
@@ -38,19 +44,22 @@
         </select>
       </div>
 </div>
+<div class="container5">    
+    <center><h3><a id ="guideline" href="">Link to government guideline</a></h3></center>
+    <center><h1>General Covid-19 info</h1></center>
+
+</div>
 
 <script>
+
     document.getElementById("sel1").onchange = runsubd;
     function runsubd(){
         subd();
         link = guidelines();
         d3.selectAll("svg").remove()
-        confchart(getname(),false);
-        deathchart(getnamedeath(),false);
-        recchart(getnamerec(),false);
-        hospchart(getnamehosp(), false);
-        ruptchart(getnamerupt(),false);
-        callchart(getnamecall(),false);
+        makechart();
+        barchart(getnametrue('conf'), false, 'conf');
+        hospchart(getnametrue('hosp'), false);
         
         var selected = document.getElementById("sel1");
         var c = selected.value;
@@ -65,9 +74,14 @@
             }
         }
 
-        document.getElementById("conftitle").innerHTML = 'Confirmed cases in '.concat(c);
-        document.getElementById("deathtitle").innerHTML = 'Deaths in '.concat(c);
-        document.getElementById("rectitle").innerHTML = 'Recovered cases in '.concat(c);
+        if(cat == 'conf'){
+            document.getElementById("graphtitle").innerHTML = 'Confirmed cases in '.concat(c);
+        } else if(cat=='deaths'){
+            document.getElementById("graphtitle").innerHTML = 'Deaths in '.concat(c);
+        } else if(cat=='rec'){
+            document.getElementById("graphtitle").innerHTML = 'Recovered cases in '.concat(c);
+        }
+        
         document.getElementById("hosptitle").innerHTML = 'Hospitals with most open beds in '.concat(c);
         document.getElementById("rupttitle").innerHTML = 'Bankrupt buisnesses in '.concat(c);
         document.getElementById("calltitle").innerHTML = 'Mental health hotline calls in '.concat(c);
@@ -79,75 +93,111 @@
 
 </script>
 
+<script>
+    var cat = 'conf'
+    function select(type){
+        var selected = document.getElementById("sel1");
+        var c = selected.value;
+        for (var i = 0; i < c.length; i++) {
+            if(c.charAt(i) == ':'){
+                for(var a =0; a<i; a++){
+                    c = c.replace(c.charAt(a), '')
+                }
+                c = c.replace(c.charAt(0), '')
+                break
+            }
+        }
+        
+        d3.selectAll('#graphchart').remove();
+        barchart(getnametrue(type), false, type);
 
-<center><h3 id="conftitle">Confirmed cases in US</h3></center>
-<center><div id="confcont"></div></center>
-
-<input type="radio" name="type" value="conf" id="conf" onclick="d3.selectAll('#confchart').remove(); confchart(getname(),false);">
-    <label for="conf">Per day</label><br>
-<input type="radio" name="type" value="deaths" id="deaths" onclick="d3.selectAll('#confchart').remove(); confchart(getname(),true)">
-    <label for="deaths">Total</label><br>
-
-<center><h3 id="deathtitle">Deaths in US</h3></center>
-<center><div id="deathscont"></div></center>
-
-<input type="radio" name="type" value="conf" id="conf" onclick="d3.selectAll('#deathchart').remove(); deathchart(getnamedeath(),false);">
-    <label for="conf">Per day</label><br>
-<input type="radio" name="type" value="deaths" id="deaths" onclick="d3.selectAll('#deathchart').remove(); deathchart(getnamedeath(),true)">
-    <label for="deaths">Total</label><br>
+        if(type == 'conf'){
+            document.getElementById("graphtitle").innerHTML = 'Confirmed cases in '.concat(c);
+            cat = 'conf'
+        } else if(type=='deaths'){
+            document.getElementById("graphtitle").innerHTML = 'Deaths in '.concat(c);
+            cat = 'deaths'
+        } else if(type=='rec'){
+            document.getElementById("graphtitle").innerHTML = 'Recovered cases in '.concat(c);
+            cat = 'rec'
+        }
+    }
+</script>
 
 
-
-<center><h3 id="rectitle">Recovered patients in US</h3></center>
-<center><div id="reccont"></div></center>
-
-<input type="radio" name="type" value="conf" id="conf" onclick="d3.selectAll('#recchart').remove(); recchart(getnamerec(),false);">
-    <label for="conf">Per day</label><br>
-<input type="radio" name="type" value="deaths" id="deaths" onclick="d3.selectAll('#recchart').remove(); recchart(getnamerec(),true)">
-    <label for="deaths">Total</label><br>
-
-<div class="container3">
-    <center><h3 id="s_title" style="display: block">Statistics:</h3></center>
-
-    <center><h3 id="d_title" style="display: block">Total deaths:</h3></center>
-    <center><h3 id="deaths"></h3></center>
-
-    <center><h3 id="dr_title" style="display: block">Death rate:</h3></center>
-    <center><h3 id="deathrate"></h3></center>
-
-    <center><h3 id="tc_title" style="display: block">Total cases:</h3></center>
-    <center><h3 id="totalcases"></h3></center>
+<div class="btn-group btn-group-justified">
+    <a class="btn btn-primary" onclick="select('conf')">Confirmed</a>
+    <a class="btn btn-primary" onclick="select('deaths')">Deaths</a>
+    <a class="btn btn-primary" onclick="select('rec')">Recovered</a>
 </div>
 
-<div class ="container4">
-    <center><h3 id="hosptitle" style="display: block">Hospitals with most open beds in US:</h3></center>
-    <br>
-    <center><div id="hospchart"></div></center>
+<center><h3 id="graphtitle">Confirmed cases in</h3></center>
+<div class="well"><center><div id="graphcont"></div></center></div>
+
+<center>
+<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); barchart(getnametrue(cat), false, cat);">
+    <label>Per month</label>
+<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); barchart(getnametrue(cat), true, cat);">
+    <label>Total</label>
+</center>
+<br>
+
+<center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#stats">Statistics</button></center>
+
+<center><div id="stats" class="container3 collapse">
+    <h3 id="s_title" style="display: block">Statistics:</h3>
+
+    <h3 id="d_title" style="display: block">Total deaths:</h3>
+    <h3 id="deaths"></h3>
+
+    <h3 id="dr_title" style="display: block">Death rate:</h3>
+    <h3 id="deathrate"></h3>
+
+    <h3 id="tc_title" style="display: block">Total cases:</h3>
+    <h3 id="totalcases"></h3>
+</div></center>
+
+<center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#hosp">Hospital availability</button></center>
+
+<div id="hosp" class ="container4 collapse">
+    <center><h3 id="hosptitle" style="display: block">Hospitals with most open beds</h3></center>
+    <div ><center><div id="hospchart"></div></center></div>
 </div>
 
-<div class ="container">
-    <center><h3><a id ="guideline" href="">Link to government guideline</a></h3></center>
+<center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#rupt">Effect on economy</button></center>
+<div id="rupt" class="container4 collapse">
+
+    <center><h3 id="rupttitle">Bankrupt buisnesses</h3></center>
+    <div class="well"><center><div id="ruptcont"></div></center></div>
+    <center>
+        <form class="radioin">
+            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); barchart(getnametrue('rupt'), false, 'rupt');">
+            <label>Per month</label>
+            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); barchart(getnametrue('rupt'), true, 'rupt');">
+            <label>Total</label>
+        </form>
+    </center>
+
+</div>
+<center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#call">Effect on mental health of the population</button></center>
+<div id="call" class="container4 collapse">
+
+    <center><h3 id="calltitle">Mental health hotline calls</h3></center>
+    <div class="well"><center><div id="callcont"></div></center></div>
+    <center>
+        <form class="radioin">
+            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); barchart(getnametrue('call'), false, 'call');">
+            <label>Per month</label>
+            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); barchart(getnametrue('call'), true, 'call');">
+            <label>Total</label><br>
+        </form>
+        <br>
+    </center>
+    
 </div>
 
-<center><h3 id="rupttitle">Bankrupt buisnesses</h3></center>
-<form class="radioin">
-    <input type="radio" name="type" value="conf" id="conf" onclick="d3.selectAll('#ruptchart').remove(); ruptchart(getnamerupt(),false);">
-    <label for="conf">Per day</label><br>
-    <input type="radio" name="type" value="deaths" id="deaths" onclick="d3.selectAll('#ruptchart').remove(); ruptchart(getnamerupt(),true)">
-    <label for="deaths">Total</label><br>
-</form>
+<div class="container1">
 
-<center><div id="ruptcont"></div></center>
-
-<center><h3 id="calltitle">Mental health hotline calls</h3></center>
-<form class="radioin">
-    <input type="radio" name="type" value="conf" id="conf" onclick="d3.selectAll('#callchart').remove(); callchart(getnamecall(),false);">
-    <label for="conf">Per day</label><br>
-    <input type="radio" name="type" value="deaths" id="deaths" onclick="d3.selectAll('#callchart').remove(); callchart(getnamecall(),true)">
-    <label for="deaths">Total</label><br>
-</form>
-
-<center><div id="callcont"></div></center>
-
+</div>
 </body>
 </html>

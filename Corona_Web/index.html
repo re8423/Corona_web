@@ -4,30 +4,40 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<script src="data.js"></script>
+
+<script src="map.js"></script>
 
 <link rel="stylesheet" href="main.css">
-
-<div class="topnav">
-    <a class="active" href="index.html">Home</a>
-    <a href="main.html">Top 10 Worst-hit Countries</a>
-    <a href="#about">About</a>
-</div>
+<div class="containerempty"></div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Worldwide Covid Info Center</a>
+        </div>
+        <ul class="nav navbar-nav">
+        <li><a href="main.html">Top 10 worst-hit countries</a></li>
+        <li><a href="#">About</a></li>
+        </ul>
+    </div>
+</nav>
 <body onload="confmap();">
 
 
     <center><h1>WORLD WIDE COVID INFO CENTER</h1></center>
-
+    <br>
     <div class="map">
-        <form class="radioin">
-            <input type="radio" name="type" value="conf" id="conf" onclick="readconf()">
-            <label for="conf">Confirmed cases Worldwide</label><br>
-            <input type="radio" name="type" value="deaths" id="deaths" onclick="readdeaths()">
-            <label for="deaths">Deaths Worldwide</label><br>
-            <input type="radio" name="type" value="hosp" id="hosp" onclick="readhosp()">
-            <label for="hosp">Hospital beds available Worldwide</label><br>
-          </form> 
+        <center>
+            <form class="radioin">
+                <input type="radio" name="type" value="conf" id="conf" onclick="readconf()">
+                <label for="conf">Confirmed cases Worldwide</label>
+                <input type="radio" name="type" value="deaths" id="deaths" onclick="readdeaths()">
+                <label for="deaths">Deaths Worldwide</label>
+                <input type="radio" name="type" value="hosp" id="hosp" onclick="readhosp()">
+                <label for="hosp">Hospital beds available Worldwide</label>
+            </form> 
+        </center>
         <center><div id="map"></div></center>
     </div>
 </body>
