@@ -1,77 +1,60 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="main.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 
 <script src="data.js"></script>
 
-<html>
+<link rel="stylesheet" href="main.css">
 
-<head>
-<title>Page Title</title>
-</head>
-<body onload="getc(); confchart(getname()); deathchart(getnamedeath()); recchart(getnamerec());">
-
-<center><h1>Covid info based on country</h1></center>
-<div class="container">
-    <div class="form-group center" style="width:300px;">
-        <label for="sel1">Select Country:</label>
-        <select class="form-control" id="sel1">
-            
-        </select>
-      </div>
+<div class="topnav">
+    <a class="active" href="index.html">Home</a>
+    <a href="main.html">Top 10 Worst-hit Countries</a>
+    <a href="#about">About</a>
 </div>
+<body onload="confmap();">
+
+
+    <center><h1>WORLD WIDE COVID INFO CENTER</h1></center>
+
+    <div class="map">
+        <form class="radioin">
+            <input type="radio" name="type" value="conf" id="conf" onclick="readconf()">
+            <label for="conf">Confirmed cases Worldwide</label><br>
+            <input type="radio" name="type" value="deaths" id="deaths" onclick="readdeaths()">
+            <label for="deaths">Deaths Worldwide</label><br>
+            <input type="radio" name="type" value="hosp" id="hosp" onclick="readhosp()">
+            <label for="hosp">Hospital beds available Worldwide</label><br>
+          </form> 
+        <center><div id="map"></div></center>
+    </div>
+</body>
 
 <script>
-    document.getElementById("sel1").onchange = runsubd;
-    function runsubd(){
-        subd();
+
+    function readconf(){
+        var x = document.getElementById("conf").value;
         d3.selectAll("svg").remove()
-        confchart(getname());
-        deathchart(getnamedeath());
-        recchart(getnamerec());
-        
-        
-        
-        var selected = document.getElementById("sel1");
-        var c = selected.value;
-        document.getElementById("conftitle").innerHTML = 'Infected cases in '.concat(c);
-        document.getElementById("deathtitle").innerHTML = 'Deaths in '.concat(c);
-        document.getElementById("rectitle").innerHTML = 'Recovered cases in '.concat(c);
+        confmap();
+    }
+
+    function readdeaths(){
+        var x = document.getElementById("deaths").value;
+        d3.selectAll("svg").remove()
+        deathmap();
+    }
+
+    function readhosp(){
+        var x = document.getElementById("hosp").value;
+        d3.selectAll("svg").remove()
+        hospmap();
     }
 
 </script>
 
 
-<center><h3 id="conftitle">Infected cases in US</h3></center>
-<center><div id="confchart"></div></center>
-
-<center><h3 id="deathtitle">Deaths in US</h3></center>
-<center><div id="deathchart"></div></center>
-
-<center><h3 id="rectitle">Recovered patients in US</h3></center>
-<center><div id="recchart"></div></center>
-
-<div class="container">
-
-    <center><h3 id="s_title" style="display: block">Statistics:</h3></center>
-
-    <center><h3 id="d_title" style="display: block">Total deaths:</h3></center>
-    <center><h3 id="deaths"></h3></center>
-
-    <center><h3 id="dr_title" style="display: block">Death rate:</h3></center>
-    <center><h3 id="deathrate"></h3></center>
-
-    <center><h3 id="tc_title" style="display: block">Total cases:</h3></center>
-    <center><h3 id="totalcases"></h3></center>
-</div>
 
 
-</body>
 </html>
-
-
