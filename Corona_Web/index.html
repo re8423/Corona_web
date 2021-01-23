@@ -22,7 +22,7 @@
         </ul>
     </div>
 </nav>
-<body onload="confmap();">
+<body onload="let map = new worldmap('conf')">
 
 
     <center><h1>WORLD WIDE COVID INFO CENTER</h1></center>
@@ -30,41 +30,16 @@
     <div class="map">
         <center>
             <form class="radioin">
-                <input type="radio" name="type" value="conf" id="conf" onclick="readconf()">
+                <input type="radio" name="type" onclick="d3.selectAll('svg').remove(); new worldmap('conf')">
                 <label for="conf">Confirmed cases Worldwide</label>
-                <input type="radio" name="type" value="deaths" id="deaths" onclick="readdeaths()">
+                <input type="radio" name="type" onclick="d3.selectAll('svg').remove(); new worldmap('deaths')">
                 <label for="deaths">Deaths Worldwide</label>
-                <input type="radio" name="type" value="hosp" id="hosp" onclick="readhosp()">
+                <input type="radio" name="type" onclick="d3.selectAll('svg').remove(); new worldmap('hosp')">
                 <label for="hosp">Hospital beds available Worldwide</label>
             </form> 
         </center>
         <center><div id="map"></div></center>
     </div>
 </body>
-
-<script>
-
-    function readconf(){
-        var x = document.getElementById("conf").value;
-        d3.selectAll("svg").remove()
-        confmap();
-    }
-
-    function readdeaths(){
-        var x = document.getElementById("deaths").value;
-        d3.selectAll("svg").remove()
-        deathmap();
-    }
-
-    function readhosp(){
-        var x = document.getElementById("hosp").value;
-        d3.selectAll("svg").remove()
-        hospmap();
-    }
-
-</script>
-
-
-
 
 </html>

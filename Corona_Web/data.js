@@ -2,8 +2,6 @@ data = [{"Country":"US","Deaths":395851,"TotalCases":23758855},{"Country":"Brazi
 
 links = [{"Country":"US", "Link":"https://www.usa.gov/coronavirus"},{"Country":"Brazil","Link":"https://home.kpmg/xx/en/home/insights/2020/04/brazil-government-and-institution-measures-in-response-to-covid.html"},{"Country":"India","Link":"https://home.kpmg/xx/en/home/insights/2020/04/india-government-and-institution-measures-in-response-to-covid.html"},{"Country":"Mexico","Link":"https://home.kpmg/xx/en/home/insights/2020/04/mexico-government-and-institution-measures-in-response-to-covid.html"},{"Country":"UK","Link":"https://www.gov.uk/guidance/national-lockdown-stay-at-home"},{"Country":"Italy","Link":"http://www.salute.gov.it/portale/nuovocoronavirus/dettaglioFaqNuovoCoronavirus.jsp?lingua=english&id=230"},{"Country":"France","Link":"https://www.gouvernement.fr/en/coronavirus-covid-19"},{"Country":"Russia","Link":"https://home.kpmg/xx/en/home/insights/2020/04/russia-government-and-institution-measures-in-response-to-covid.html"},{"Country":"Iran","Link":"https://home.kpmg/xx/en/home/insights/2020/04/iran-government-and-institution-measures-in-response-to-covid.html"},{"Country":"Spain","Link":"https://www.esmadrid.com/en/information-coronavirus?utm_referrer=https%3A%2F%2Fwww.google.com%2F"}]
 
-types = ['rupt', 'call']
-
 function guidelines(){
     var selected = document.getElementById("sel1");
     var c = selected.value;
@@ -114,76 +112,80 @@ function subd(){
     
 }
 
-function hospchart(name){
-    var outerWidth = 900;
-      var outerHeight = 400;
-      var margin = { left: 250, top: 0, right: 50, bottom: 90 };
-      var barPadding = 0.2;
-      var barPaddingOuter = 0.1;
+class hospchart{
+    constructor(name){
+        this.name = name
 
-      var xColumn = "beds";
-      var yColumn = "area";
-      var xAxisLabelText = "Available beds";
-      var xAxisLabelOffset = 30;
+        var outerWidth = 900;
+        var outerHeight = 400;
+        var margin = { left: 250, top: 0, right: 50, bottom: 90 };
+        var barPadding = 0.2;
+        var barPaddingOuter = 0.1;
 
-      var innerWidth  = outerWidth  - margin.left - margin.right;
-      var innerHeight = outerHeight - margin.top  - margin.bottom;
+        var xColumn = "beds";
+        var yColumn = "area";
+        var xAxisLabelText = "Available beds";
+        var xAxisLabelOffset = 30;
 
-      var svg = d3.select('#hospchart').append("svg")
-        .attr("width",  outerWidth)
-        .attr("height", outerHeight)
-      var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var innerWidth  = outerWidth  - margin.left - margin.right;
+        var innerHeight = outerHeight - margin.top  - margin.bottom;
 
-      var xAxisG = g.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + innerHeight + ")")
-      var xAxisLabel = xAxisG.append("text")
-        .attr("x", innerWidth / 1.1)
-        .attr("y", xAxisLabelOffset)
-        .attr("class", "label")
-        .text(xAxisLabelText)
-        
-      var yAxisG = g.append("g")
-        .attr("class", "y axis");
+        var svg = d3.select('#hospchart').append("svg")
+            .attr("width",  outerWidth)
+            .attr("height", outerHeight)
+        var g = svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var xScale = d3.scale.linear().range([0, innerWidth]);
-      var yScale = d3.scale.ordinal().rangeRoundBands([0, innerHeight], barPadding, barPaddingOuter);
+        var xAxisG = g.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + innerHeight + ")")
+        var xAxisLabel = xAxisG.append("text")
+            .attr("x", innerWidth / 1.1)
+            .attr("y", xAxisLabelOffset)
+            .attr("class", "label")
+            .text(xAxisLabelText)
+            
+        var yAxisG = g.append("g")
+            .attr("class", "y axis");
 
-      var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
-        .ticks(5)
-        .tickFormat(d3.format("s"))
-        .outerTickSize(0);
-      var yAxis = d3.svg.axis().scale(yScale).orient("left")
-        .outerTickSize(0);
+        var xScale = d3.scale.linear().range([0, innerWidth]);
+        var yScale = d3.scale.ordinal().rangeRoundBands([0, innerHeight], barPadding, barPaddingOuter);
 
-      function render(data){
+        var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+            .ticks(5)
+            .tickFormat(d3.format("s"))
+            .outerTickSize(0);
+        var yAxis = d3.svg.axis().scale(yScale).orient("left")
+            .outerTickSize(0);
 
-        xScale.domain([0, d3.max(data, function (d){ return d[xColumn]; })]);
-        yScale.domain(       data.map( function (d){ return d[yColumn]; }));
+        function render(data){
 
-        xAxisG.call(xAxis);
-        yAxisG.call(yAxis);
+            xScale.domain([0, d3.max(data, function (d){ return d[xColumn]; })]);
+            yScale.domain(       data.map( function (d){ return d[yColumn]; }));
+
+            xAxisG.call(xAxis);
+            yAxisG.call(yAxis);
 
 
-        var bars = g.selectAll("rect").data(data);
-        bars.enter().append("rect")
-          .attr("height", yScale.rangeBand())
-        bars
-          .attr("x",0)
-          .attr("y",     function (d){ return yScale(d[yColumn]); })
-          .attr("width", function (d){ return xScale(d[xColumn]); })
-          .style("fill", "#DE274E");
+            var bars = g.selectAll("rect").data(data);
+            bars.enter().append("rect")
+            .attr("height", yScale.rangeBand())
+            bars
+            .attr("x",0)
+            .attr("y",     function (d){ return yScale(d[yColumn]); })
+            .attr("width", function (d){ return xScale(d[xColumn]); })
+            .style("fill", "#DE274E");
 
-        bars.exit().remove();
-      }
+            bars.exit().remove();
+        }
 
-      function type(d){
-        d.population = +d.population;
-        return d;
-      }
+        function type(d){
+            d.population = +d.population;
+            return d;
+        }
 
-      d3.csv(name, type, render);
+        d3.csv(this.name, type, render);
+    }
 }
 
 function getnametrue(type){
@@ -205,125 +207,120 @@ function getnametrue(type){
     fin = c.concat(type)
     fin = fin.concat('.csv')
     return fin
-    // alert(tempconf)
 }
 
-function barchart(name, total, type){
+class barchar {
+    constructor(name, total, type) {
+        this.total = total
+        this.name = name
+        this.type = type
 
-    if(type == 'conf' || type =='deaths' || type=='rec'){
-        var divid = 'graph'.concat('chart')
-        var contid = 'graph'.concat('cont')
-    }else{
-        var divid = type.concat('chart')
-        var contid = type.concat('cont')
-    }
+        if(type == 'conf' || type =='deaths' || type=='rec'){
+            this.divid = 'graph'.concat('chart')
+            this.contid = 'graph'.concat('cont')
+        }else{
+            this.divid = type.concat('chart')
+            this.contid = type.concat('cont')
+        }
 
+        var div = document.createElement('div');
+        div.setAttribute("align", "center")
+        div.setAttribute("id", this.divid)
+        document.getElementById(this.contid).appendChild(div);
+    
+        var margin = {top: 20, right: 20, bottom: 70, left: 70},
+        width = 600 - margin.left - margin.right,
+        height = 300 - margin.top - margin.bottom;
+    
+        // Parse the date / time
+        var	parseDate = d3.time.format("%Y-%m").parse;
+    
+        var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+    
+        var y = d3.scale.linear().range([height, 0]);
+    
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .tickFormat(d3.time.format("%Y-%m"));
+    
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(10);
+    
+        this.divid = '#'.concat(this.divid)
 
+        var svg = d3.select(this.divid).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", 
+                "translate(" + margin.left + "," + margin.top + ")");
+    
+        var arr = []
 
-    var div = document.createElement('div');
-    div.setAttribute("align", "center")
-    div.setAttribute("id", divid)
-    document.getElementById(contid).appendChild(div);
-
-    temp = name
-    var arr = []
-
-    var margin = {top: 20, right: 20, bottom: 70, left: 70},
-    width = 600 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-
-    // Parse the date / time
-    var	parseDate = d3.time.format("%Y-%m").parse;
-
-    var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
-    var y = d3.scale.linear().range([height, 0]);
-
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .tickFormat(d3.time.format("%Y-%m"));
-
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(10);
-
-    divid = '#'.concat(divid)
-
-    var svg = d3.select(divid).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", 
-            "translate(" + margin.left + "," + margin.top + ")");
-
-    d3.csv(temp, function(error, data) {
-
-        data.forEach(function(d) {
-            d.date = parseDate(d.date);
-            d.value = +d.value;
-
-            if(total==true){
-                arr.push(d.value)
+        d3.csv(name, function(error, data) {
             
-                for(i = 0; i < arr.length-1; i++){
-                    d.value = d.value + arr[i]
+            data.forEach(function(d) {
+                d.date = parseDate(d.date);
+                d.value = +d.value;
+                if(total==true){
+                    arr.push(d.value)
+                
+                    for(i = 0; i < arr.length-1; i++){
+                        d.value = d.value + arr[i]
+                    }
                 }
-            }
+            });
+            
+        x.domain(data.map(function(d) { return d.date; }));
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+    
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", "-.55em")
+            .attr("transform", "rotate(-90)" )
+    
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Patients");
+    
+        svg.selectAll(".text")        
+            .data(data)
+            .enter()
+            .append("text")
+            .style("font-size", "8px")
+            .attr("class","label")
+            .attr("x", (function(d) { return x(d.date); }  ))
+            .attr("y", function(d) { return y(d.value) - 20; })
+            .attr("dy", ".75em")
+            .text(function(d) { return d.value; });
+    
+        svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
+            .style("fill", "#2B8FEE")
+            .attr("x", function(d) { return x(d.date); })
+            .attr("width", x.rangeBand())
+            .attr("y", function(d) { return y(d.value); })
+            .attr("height", function(d) { return height - y(d.value); });
+    
         });
-        
-    x.domain(data.map(function(d) { return d.date; }));
-    y.domain([0, d3.max(data, function(d) { return d.value; })]);
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", "-.55em")
-        .attr("transform", "rotate(-90)" )
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Patients");
-
-    svg.selectAll(".text")        
-        .data(data)
-        .enter()
-        .append("text")
-        .style("font-size", "8px")
-        .attr("class","label")
-        .attr("x", (function(d) { return x(d.date); }  ))
-        .attr("y", function(d) { return y(d.value) - 20; })
-        .attr("dy", ".75em")
-        .text(function(d) { return d.value; });
-
-    svg.selectAll("bar")
-        .data(data)
-        .enter().append("rect")
-        .style("fill", "#2B8FEE")
-        .attr("x", function(d) { return x(d.date); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.value); })
-        .attr("height", function(d) { return height - y(d.value); });
-
-    });
     
-    
-}
-
-function makechart(){
-    for(i =0; i<types.length; i++){
-        type = types[i]
-        barchart(getnametrue(type), true, type)
     }
+
+
 }
+

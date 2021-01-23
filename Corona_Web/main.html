@@ -19,7 +19,7 @@
 <head>
 <title>Page Title</title>
 </head>
-<body onload="getc(); barchart(getnametrue('conf'), false, 'conf'); makechart(); hospchart(getnametrue('hosp'));">
+<body onload="getc(); let graph = new barchar(getnametrue('conf'), false, 'conf'); let ruptgraph = new barchar(getnametrue('rupt'), false, 'rupt'); let callgraph = new barchar(getnametrue('call'), false, 'call'); let hospgraph = new hospchart(getnametrue('hosp'))">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -57,9 +57,11 @@
         subd();
         link = guidelines();
         d3.selectAll("svg").remove()
-        makechart();
-        barchart(getnametrue('conf'), false, 'conf');
-        hospchart(getnametrue('hosp'), false);
+        let graph = new barchar(getnametrue('conf'), false, 'conf');
+        let ruptgraph = new barchar(getnametrue('rupt'), false, 'rupt');
+        let callgraph = new barchar(getnametrue('call'), false, 'call');
+        let hospgraph = new hospchart(getnametrue('hosp'))
+
         
         var selected = document.getElementById("sel1");
         var c = selected.value;
@@ -109,7 +111,7 @@
         }
         
         d3.selectAll('#graphchart').remove();
-        barchart(getnametrue(type), false, type);
+        let graph = new barchar(getnametrue(type), false, type);
 
         if(type == 'conf'){
             document.getElementById("graphtitle").innerHTML = 'Confirmed cases in '.concat(c);
@@ -135,9 +137,9 @@
 <div class="well"><center><div id="graphcont"></div></center></div>
 
 <center>
-<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); barchart(getnametrue(cat), false, cat);">
+<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); let graph = new barchar(getnametrue(cat), false, cat);">
     <label>Per month</label>
-<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); barchart(getnametrue(cat), true, cat);">
+<input type="radio" name="type" onclick="d3.selectAll('#graphchart').remove(); let graph = new barchar(getnametrue(cat), true, cat);">
     <label>Total</label>
 </center>
 <br>
@@ -145,16 +147,15 @@
 <center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#stats">Statistics</button></center>
 
 <center><div id="stats" class="container3 collapse">
-    <h3 id="s_title" style="display: block">Statistics:</h3>
+    <br>
+    <p id="d_title" style="display: block">Total deaths:</p>
+    <p id="deaths"></p>
 
-    <h3 id="d_title" style="display: block">Total deaths:</h3>
-    <h3 id="deaths"></h3>
+    <p id="dr_title" style="display: block">Death rate:</p>
+    <p id="deathrate"></p>
 
-    <h3 id="dr_title" style="display: block">Death rate:</h3>
-    <h3 id="deathrate"></h3>
-
-    <h3 id="tc_title" style="display: block">Total cases:</h3>
-    <h3 id="totalcases"></h3>
+    <p id="tc_title" style="display: block">Total cases:</p>
+    <p id="totalcases"></p>
 </div></center>
 
 <center><button class="btn btn-primary btn-block btn-lg" data-toggle="collapse" data-target="#hosp">Hospital availability</button></center>
@@ -171,9 +172,9 @@
     <div class="well"><center><div id="ruptcont"></div></center></div>
     <center>
         <form class="radioin">
-            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); barchart(getnametrue('rupt'), false, 'rupt');">
+            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); let ruptgraph = new barchar(getnametrue('rupt'), false, 'rupt');">
             <label>Per month</label>
-            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); barchart(getnametrue('rupt'), true, 'rupt');">
+            <input type="radio" name="type" onclick="d3.selectAll('#ruptchart').remove(); let ruptgraph = new barchar(getnametrue('rupt'), true, 'rupt');">
             <label>Total</label>
         </form>
     </center>
@@ -186,9 +187,9 @@
     <div class="well"><center><div id="callcont"></div></center></div>
     <center>
         <form class="radioin">
-            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); barchart(getnametrue('call'), false, 'call');">
+            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); let callgraph = new barchar(getnametrue('call'), false, 'call');">
             <label>Per month</label>
-            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); barchart(getnametrue('call'), true, 'call');">
+            <input type="radio" name="type" onclick="d3.selectAll('#callchart').remove(); let callgraph = new barchar(getnametrue('call'), true, 'call');">
             <label>Total</label><br>
         </form>
         <br>
