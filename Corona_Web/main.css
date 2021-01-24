@@ -10,37 +10,37 @@
   .containerempty { 
     height: 70px;
     position: relative;
-    border: 3px solid green; 
+  }
+
+  .textcont { 
+    height: 110px;
+    width: 800px;
+    position: relative;
   }
 
   .container1 { 
     height: 110px;
     position: relative;
-    border: 3px solid green; 
   }
 
   .container3 { 
     height: 220px;
     position: relative;
-    border: 3px solid green; 
   }
 
   .container4 { 
     height: 450px;
     position: relative;
-    border: 3px solid green; 
   }
 
   .container5 { 
     height: 150px;
     position: relative;
-    border: 3px solid green; 
   }
 
   .map { 
     height: 600px;
     position: relative;
-    border: 3px solid green; 
   }
  
   .axis {

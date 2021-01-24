@@ -17,9 +17,10 @@
 <html>
 
 <head>
-<title>Page Title</title>
+    <title>Top 10 worst-hit countries</title>
 </head>
-<body onload="getc(); let graph = new barchar(getnametrue('conf'), false, 'conf'); let ruptgraph = new barchar(getnametrue('rupt'), false, 'rupt'); let callgraph = new barchar(getnametrue('call'), false, 'call'); let hospgraph = new hospchart(getnametrue('hosp'))">
+
+<body onload="init(); let graph = new barchar(getnametrue('conf'), false, 'conf'); let ruptgraph = new barchar(getnametrue('rupt'), false, 'rupt'); let callgraph = new barchar(getnametrue('call'), false, 'call'); let hospgraph = new hospchart(getnametrue('hosp'))">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -28,7 +29,7 @@
         </div>
         <ul class="nav navbar-nav">
         <li class="active"><a href="main.html">Top 10 worst-hit countries</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="about.html">About</a></li>
         </ul>
     </div>
 </nav>
@@ -52,9 +53,9 @@
 
 <script>
 
-    document.getElementById("sel1").onchange = runsubd;
-    function runsubd(){
-        subd();
+    document.getElementById("sel1").onchange = runupda;
+    function runupda(){
+        upda();
         link = guidelines();
         d3.selectAll("svg").remove()
         let graph = new barchar(getnametrue('conf'), false, 'conf');
@@ -83,7 +84,6 @@
         } else if(cat=='rec'){
             document.getElementById("graphtitle").innerHTML = 'Recovered cases in '.concat(c);
         }
-        
         document.getElementById("hosptitle").innerHTML = 'Hospitals with most open beds in '.concat(c);
         document.getElementById("rupttitle").innerHTML = 'Bankrupt buisnesses in '.concat(c);
         document.getElementById("calltitle").innerHTML = 'Mental health hotline calls in '.concat(c);
